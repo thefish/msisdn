@@ -1,0 +1,33 @@
+* instructions
+** Create an application with following requirements:
+
+*** latest PHP or Golang
+*** takes MSISDN as an input
+msisdn = country code + network prefix + subscriber number
+
+example +38640123456 :
+cc = 386
+np = 41
+sn = 123456
+
+*** returns MNO identifier, country dialling code, subscriber number and country identifier as defined with ISO 3166-1-alpha-2
+**** What is MNO identifier?
+MCC/MNC?
+A mobile country code (MCC) is used in combination with a mobile network code (MNC) (also known as a "MCC / MNC tuple") to uniquely identify a mobile network operator
+*** do not care about number portability
+
+** Write all needed tests.
+
+** Expose the package through an RPC API, select one and explain why have you chosen it.
+
+** Use git, vagrant and/or docker, and a configuration management tool (puppet, chef, ansible ...).
+
+** Other:
+
+- a git repository with full commit history is expected to be part of the delivered solution
+- if needed, provide additional installation instructions, but there shouldn't be much more than running a simple command to set everything up
+- use best practices all around. For PHP, good source of that would be http://www.phptherightway.com
+* info
+iso codes source: https://www.iso.org/obp/ui/#search
+mss-mnc.csv: http://mcc-mnc.com/
+
