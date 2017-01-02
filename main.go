@@ -9,10 +9,12 @@ import (
 
 func main() {
 	for _, i := range []string{"38631123456", "38670987654", "8801812345678"} {
-		err := parseMsisdn(i)
+		msisdn, err := parseMsisdn(i)
 		if err != nil {
 			log.Println(err)
+			continue
 		}
+		log.Println("mno:", msisdn.mno, "cdc:", msisdn.cdc, "sn:", msisdn.sn, "country id:", msisdn.countryID)
 	}
 }
 
@@ -38,13 +40,26 @@ var countryNDCs = map[string][]ndcMno{
 		ndcMno{"70", "Telemach"},
 		ndcMno{"64", "T-2"},
 	},
+	"BD": []ndcMno{
+		ndcMno{"11", "Citycell"},
+		ndcMno{"13", "Grameenphone"},
+		ndcMno{"15", "TeleTalk"},
+		ndcMno{"16", "Robi"},
+		ndcMno{"17", "Grameenphone"},
+		ndcMno{"18", "Robi"},
+		ndcMno{"19", "Banglalink"},
+	},
 }
 
-func parseMsisdn(in string) error {
+type msisdnData struct {
+	mno, cdc, sn, countryID string
+}
+
+func parseMsisdn(in string) (*msisdnData, error) {
 
 	// assume that input is valid - just numbers
 	if len(in) > 15 {
-		return errors.New("Input too long.")
+		return nil, errors.New("Input too long.")
 	}
 
 	var isoID, cdc string
@@ -58,7 +73,7 @@ func parseMsisdn(in string) error {
 	}
 
 	if cdc == "" {
-		return errors.New("Unknown Country Code.")
+		return nil, errors.New("Unknown Country Code.")
 	}
 
 	var mno string
@@ -71,14 +86,12 @@ func parseMsisdn(in string) error {
 			}
 		}
 	} else {
-		return fmt.Errorf("Country \"%s\" not implemented", isoID)
+		return nil, fmt.Errorf("Country \"%s\" not implemented", isoID)
 	}
 
 	if mno == "" {
-		return errors.New("Network Destination Code unknown")
+		return nil, errors.New("Network Destination Code unknown")
 	}
 
-	log.Println("cdc:", cdc, "country id:", isoID, "mno:", mno, "sn:", in)
-
-	return nil
+	return &msisdnData{mno, cdc, in, isoID}, nil
 }
