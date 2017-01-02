@@ -1,4 +1,4 @@
-package parser
+package main
 
 var countryCodes = map[string]string{
 	"386": "SI",
