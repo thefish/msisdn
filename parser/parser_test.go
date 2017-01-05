@@ -33,6 +33,51 @@ func TestParseMsisdn(t *testing.T) {
 
 }
 
+func TestParseMsisdnNANP(t *testing.T) {
+	// USA
+	m, _ := ParseMsisdn("1801-433-7300")
+	if m.CountryID != "US" {
+		t.Error("MNO identifier invalid. Expected US, got", m.CountryID)
+	}
+
+	if m.Cdc != "1" {
+		t.Error("Invalid CDC. Expected 1, got", m.Cdc)
+	}
+
+	if m.Sn != "8014337300" {
+		t.Error("Invalid sn. Expected 8004337300, got", m.Sn)
+	}
+
+	// Canada
+	m, _ = ParseMsisdn("1604-522-6600")
+	if m.CountryID != "CA" {
+		t.Error("MNO identifier invalid. Expected CA, got", m.CountryID)
+	}
+
+	if m.Cdc != "1" {
+		t.Error("Invalid CDC. Expected 1, got", m.Cdc)
+	}
+
+	if m.Sn != "6045226600" {
+		t.Error("Invalid sn. Expected 6045226600, got", m.Sn)
+	}
+
+	// another country from NANP - The Bahamas
+	m, _ = ParseMsisdn("+1 242 123123")
+	if m.CountryID != "BS" {
+		t.Error("MNO identifier invalid. Expected BS, got", m.CountryID)
+	}
+
+	if m.Cdc != "1242" {
+		t.Error("Invalid CDC. Expected 1242, got", m.Cdc)
+	}
+
+	if m.Sn != "123123" {
+		t.Error("Invalid sn. Expected 123123, got", m.Sn)
+	}
+
+}
+
 func TestClean(t *testing.T) {
 	if sanitize("0038631313131") != "38631313131" {
 		t.Error("Should remove leading 0")
@@ -48,6 +93,10 @@ func TestClean(t *testing.T) {
 
 	if sanitize("38-(631)-313-131") != "38631313131" {
 		t.Error("Should remove parens")
+	}
+
+	if sanitize("38 (631) 313 131") != "38631313131" {
+		t.Error("Should remove spaces")
 	}
 }
 

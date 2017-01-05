@@ -34,3 +34,7 @@ others via rpc-jsonrpc gateway.
 iso codes source: https://www.iso.org/obp/ui/#search
 mss-mnc.csv: http://mcc-mnc.com/
 
+NANP regexes build with data from https://simple.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes
+For NANP, there is no apparent mno identifier and Number Planning Area is
+considered a part of subscriber number. Therefore, MnoID is empty and sn
+contains NPA.

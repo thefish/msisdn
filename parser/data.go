@@ -2,8 +2,27 @@ package parser
 
 var countryCodes = map[string]string{
 	"386": "SI",
-	"1":   "US",
 	"880": "BD",
+}
+
+var nanpCountryCodes = map[string]string{
+	"1242": "BS",
+	"1246": "BB",
+	"1264": "AI",
+	"1268": "AG",
+	"1340": "VI",
+	"1345": "KY",
+	"1441": "BM",
+	"1473": "GD",
+	"1664": "MS",
+	"1671": "GU",
+	"1758": "LC",
+	"1767": "DM",
+	"1784": "VC",
+	"1809": "DO",
+	"1868": "TT",
+	"1869": "KN",
+	"1876": "JM",
 }
 
 type ndcMno struct {
