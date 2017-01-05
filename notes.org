@@ -11,14 +11,17 @@ np = 41
 sn = 123456
 
 *** returns MNO identifier, country dialling code, subscriber number and country identifier as defined with ISO 3166-1-alpha-2
-**** What is MNO identifier?
-MCC/MNC?
-A mobile country code (MCC) is used in combination with a mobile network code (MNC) (also known as a "MCC / MNC tuple") to uniquely identify a mobile network operator
+MNO = np
 *** do not care about number portability
 
 ** Write all needed tests.
 
 ** Expose the package through an RPC API, select one and explain why have you chosen it.
+I chose JSON-RPC over default Golang rpc (net/rpc) library since I don't know
+the type of clients that will connect to the exposed interface. JSON-RPC seems
+suitable since it has implementations in python, Java, PHP, ruby, etc. If I knew
+the majority of calls came from Golang clients, I'd choose net/rpc and serve the
+others via rpc-jsonrpc gateway.
 
 ** Use git, vagrant and/or docker, and a configuration management tool (puppet, chef, ansible ...).
 
