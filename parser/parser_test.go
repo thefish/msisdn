@@ -32,3 +32,39 @@ func TestParseMsisdn(t *testing.T) {
 	}
 
 }
+
+func TestClean(t *testing.T) {
+	if sanitize("0038631313131") != "38631313131" {
+		t.Error("Should remove leading 0")
+	}
+
+	if sanitize("+38631313131") != "38631313131" {
+		t.Error("Should remove leading +")
+	}
+
+	if sanitize("+386-313-13131") != "38631313131" {
+		t.Error("Should remove hyphens")
+	}
+
+	if sanitize("38-(631)-313-131") != "38631313131" {
+		t.Error("Should remove parens")
+	}
+}
+
+func TestParseMsisdnExceptions(t *testing.T) {
+	_, e := ParseMsisdn("1111111")
+	if e == nil {
+		t.Error("Shouldn't allow number with less than 8 digits")
+	}
+
+	_, e = ParseMsisdn("1111111111111111")
+	if e == nil {
+		t.Error("Shouldn't allow number with more than 15 digits")
+	}
+
+	_, e = ParseMsisdn("386a1123123")
+	if e == nil {
+		t.Error("Non-digits in number.")
+	}
+
+}
