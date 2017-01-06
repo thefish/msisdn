@@ -53,10 +53,10 @@ var countryNDCs = map[string][]ndcMno{
 }
 
 var countries = map[string]*countryData{
-	"386": &countryData{2, "SI"},
-	"880": &countryData{2, "BD"},
-	"44":  &countryData{3, "GB"},
-	"1":   &countryData{3, "US"},
+	"386": &countryData{3, 2, "SI"},
+	"880": &countryData{3, 2, "BD"},
+	"44":  &countryData{2, 3, "GB"},
+	"1":   &countryData{1, 3, "US"},
 }
 
 func initCountryData() *trie {

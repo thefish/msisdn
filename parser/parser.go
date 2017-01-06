@@ -27,13 +27,16 @@ func (t *trie) ParseMsisdn(in string) (*MsisdnData, error) {
 		return nil, errors.New("Invalid input")
 	}
 
-	cData, offset, err := t.findCountry(in)
+	cData, err := t.findCountry(in)
 	if err != nil {
 		return nil, err
 	}
+	offset := cData.ccSize
+
 	cdc := in[:offset]
-	snOffset := offset + cData.ndcSize
+	snOffset := offset + cData.mnoSize
 	mno := in[offset:snOffset]
+
 	return &MsisdnData{mno, cdc, in[snOffset:], cData.isoID}, nil
 	// if strings.HasPrefix(in, "1") {
 	// 	return parseNanpMsisdn(in)

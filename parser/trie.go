@@ -12,8 +12,9 @@ type trie struct {
 }
 
 type countryData struct {
-	ndcSize int
-	isoID   string
+	ccSize  int    // country code size (workaround for NANP specifics)
+	mnoSize int    // number of digits in network identifier
+	isoID   string // ISO 3166-1-alpha-2
 }
 
 func findBranch(r rune, branches []*trie) *trie {
@@ -45,7 +46,7 @@ func (t *trie) printWhole(lvl int) {
 	}
 	fmt.Printf("%c", t.symbol)
 	if t.country != nil {
-		fmt.Printf(" %s %d ", t.country.isoID, t.country.ndcSize)
+		fmt.Printf(" %s %d ", t.country.isoID, t.country.mnoSize)
 	}
 	fmt.Println()
 	for _, v := range t.branches {
@@ -54,30 +55,28 @@ func (t *trie) printWhole(lvl int) {
 }
 
 // findCountry finds a country in trie based on given string
-func (t *trie) findCountry(in string) (country *countryData, cc int, e error) {
+func (t *trie) findCountry(in string) (country *countryData, e error) {
 	var b, last *trie
-	var lastInd int
 
-	for i, r := range in {
+	for _, r := range in {
 		b = findBranch(r, t.branches)
 
 		if b == nil {
 			if t.country == nil {
 				break
 			}
-			return t.country, i, nil
+			return t.country, nil
 		}
 
 		// remember last match, in case we traverse too deep
 		if t.country != nil {
 			last = t
-			lastInd = i
 		}
 		t = b
 	}
 
 	if last != nil && last.country != nil {
-		return last.country, lastInd, nil
+		return last.country, nil
 	}
-	return nil, 0, errors.New("Country code error.")
+	return nil, errors.New("Country code error.")
 }
