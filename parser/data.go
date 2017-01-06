@@ -51,3 +51,20 @@ var countryNDCs = map[string][]ndcMno{
 		ndcMno{"19", "Banglalink"},
 	},
 }
+
+var countries = map[string]*countryData{
+	"386": &countryData{2, "SI"},
+	"880": &countryData{2, "BD"},
+	"44":  &countryData{3, "GB"},
+	"1":   &countryData{3, "US"},
+}
+
+func initCountryData() *trie {
+	t := new(trie)
+
+	for cc, data := range countries {
+		t.addCountry(cc, data)
+	}
+
+	return t
+}
