@@ -6,16 +6,14 @@ import (
 )
 
 func ExampleMsisdnPrintout() {
-	t := initCountryData()
-	m, _ := t.ParseMsisdn("38631123456")
+	m, _ := ParseMsisdn("38631123456")
 
 	fmt.Print(m)
 	// Output: mno:31, cdc:386, sn:123456, country id:SI
 }
 
 func TestParseMsisdn(t *testing.T) {
-	root := initCountryData()
-	m, _ := root.ParseMsisdn("38670987654")
+	m, _ := ParseMsisdn("38670987654")
 
 	if m.Mno != "70" {
 		t.Error("MNO identifier invalid.", m.Mno)
@@ -36,10 +34,8 @@ func TestParseMsisdn(t *testing.T) {
 }
 
 func TestParseMsisdnNANP(t *testing.T) {
-	root := initCountryData()
-
 	// USA
-	m, _ := root.ParseMsisdn("1801-433-7300")
+	m, _ := ParseMsisdn("1801-433-7300")
 	if m.CountryID != "US" {
 		t.Error("Country identifier invalid. Expected US, got", m.CountryID)
 	}
@@ -48,12 +44,12 @@ func TestParseMsisdnNANP(t *testing.T) {
 		t.Error("Invalid CDC. Expected 1, got", m.Cdc)
 	}
 
-	if m.Sn != "8014337300" {
-		t.Error("Invalid sn. Expected 8014337300, got", m.Sn)
+	if m.Sn != "4337300" {
+		t.Error("Invalid sn. Expected 4337300, got", m.Sn)
 	}
 
 	// Canada
-	m, _ = root.ParseMsisdn("1604-522-6600")
+	m, _ = ParseMsisdn("1604-522-6600")
 	if m.CountryID != "CA" {
 		t.Error("MNO identifier invalid. Expected CA, got", m.CountryID)
 	}
@@ -62,12 +58,16 @@ func TestParseMsisdnNANP(t *testing.T) {
 		t.Error("Invalid CDC. Expected 1, got", m.Cdc)
 	}
 
-	if m.Sn != "6045226600" {
-		t.Error("Invalid sn. Expected 6045226600, got", m.Sn)
+	if m.Sn != "5226600" {
+		t.Error("Invalid sn. Expected 5226600, got", m.Sn)
+	}
+
+	if m.Mno != "604" {
+		t.Error("Invalid mno. Expected 604, got", m.Sn)
 	}
 
 	// another country from NANP - The Bahamas
-	m, _ = root.ParseMsisdn("+1 242 123123")
+	m, _ = ParseMsisdn("+1 242 123123")
 	if m.CountryID != "BS" {
 		t.Error("MNO identifier invalid. Expected BS, got", m.CountryID)
 	}
@@ -105,19 +105,17 @@ func TestClean(t *testing.T) {
 }
 
 func TestParseMsisdnExceptions(t *testing.T) {
-	root := initCountryData()
-
-	_, e := root.ParseMsisdn("1111111")
+	_, e := ParseMsisdn("1111111")
 	if e == nil {
 		t.Error("Shouldn't allow number with less than 8 digits")
 	}
 
-	_, e = root.ParseMsisdn("1111111111111111")
+	_, e = ParseMsisdn("1111111111111111")
 	if e == nil {
 		t.Error("Shouldn't allow number with more than 15 digits")
 	}
 
-	_, e = root.ParseMsisdn("386a1123123")
+	_, e = ParseMsisdn("386a1123123")
 	if e == nil {
 		t.Error("Non-digits in number.")
 	}
