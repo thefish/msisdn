@@ -11,12 +11,6 @@ type trie struct {
 	country  *countryData
 }
 
-type countryData struct {
-	ccSize  int    // country code size (workaround for NANP specifics)
-	mnoSize int    // number of digits in network identifier
-	isoID   string // ISO 3166-1-alpha-2
-}
-
 func findBranch(r rune, branches []*trie) *trie {
 	for _, b := range branches {
 		if b.symbol == r {

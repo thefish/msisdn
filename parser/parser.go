@@ -28,7 +28,10 @@ func init() {
 // MsisdnData contains mobile network operator id, country dial code, subscriber
 // number and country id
 type MsisdnData struct {
-	Mno, Cdc, Sn, CountryID string
+	Mno       string // mobile network operator identifier
+	Cdc       string // country dial code
+	Sn        string // subscriber number
+	CountryID string // ISO 3166-1-alpha-2
 }
 
 func (m *MsisdnData) String() string {
@@ -45,17 +48,17 @@ func ParseMsisdn(in string) (*MsisdnData, error) {
 		return nil, errors.New("Invalid input")
 	}
 
-	cData, err := trieRoot.findCountry(in)
+	country, err := trieRoot.findCountry(in)
 	if err != nil {
 		return nil, err
 	}
-	offset := cData.ccSize
-	snOffset := offset + cData.mnoSize
+	off := country.ccSize
+	snOff := off + country.mnoSize
 
-	cdc := in[:offset]
-	mno := in[offset:snOffset]
+	cc := in[:off]
+	mno := in[off:snOff]
 
-	return &MsisdnData{mno, cdc, in[snOffset:], cData.isoID}, nil
+	return &MsisdnData{mno, cc, in[snOff:], country.isoID}, nil
 }
 
 // clean the input string

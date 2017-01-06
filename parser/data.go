@@ -1,15 +1,12 @@
 package parser
 
-var countryCodes = map[string]string{
-	"386": "SI",
-	"880": "BD",
+type countryData struct {
+	ccSize  int    // country code size (workaround for NANP specifics)
+	mnoSize int    // number of digits in network identifier
+	isoID   string // ISO 3166-1-alpha-2
 }
 
 var countries = map[string]*countryData{
-	"386": &countryData{3, 2, "SI"},
-	"880": &countryData{3, 2, "BD"},
-	"44":  &countryData{2, 3, "GB"},
-
 	// NANP default
 	"1": &countryData{1, 3, "US"},
 	// NANP other
@@ -30,6 +27,20 @@ var countries = map[string]*countryData{
 	"1868": &countryData{4, 0, "TT"},
 	"1869": &countryData{4, 0, "KN"},
 	"1876": &countryData{4, 0, "JM"},
+
+	// Europe
+	"358": &countryData{3, 2, "FI"},
+	"386": &countryData{3, 2, "SI"},
+	"387": &countryData{3, 2, "HR"},
+	"44":  &countryData{2, 3, "GB"},
+
+	// former Soviet Union
+	"7":  &countryData{1, 3, "RU"},
+	"76": &countryData{1, 3, "KZ"},
+	"77": &countryData{1, 3, "KZ"},
+
+	// Asia
+	"880": &countryData{3, 2, "BD"},
 }
 
 var usaData = &countryData{1, 3, "US"}
