@@ -28,12 +28,12 @@ func main() {
 
 	var in server.Input
 	var reply parser.MsisdnData
-	in = "3864123321"
+	in = "+386-41-23321"
 
 	err = client.Call("Msisdn.Parse", &in, &reply)
 	if err != nil {
 		log.Fatalf(err.Error())
 	}
 
-	log.Println("rpc call: ", reply.String())
+	log.Printf("rpc call, in:%s, out:%s", in, reply.String())
 }
