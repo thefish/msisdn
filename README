@@ -1,0 +1,27 @@
+msisdn - a golang phone number parser
+
+Dependencies:
+ - docker
+ - docker-compose
+
+How to run the example:
+  docker-compose up
+
+Misc:
+MNO identifier parsing is not reliable, because I couldn't find a central source
+with examples for every country.
+
+JSON-RPC was chosen over default Golang rpc (net/rpc) library since I don't know
+the type of clients that will connect to the exposed interface. JSON-RPC seems
+suitable because:
+ - it also has implementations in python, Java, PHP, ruby, etc.
+ - json is human-readable
+If I knew the majority of calls came from Golang clients, I'd choose net/rpc and
+serve the others via rpc-jsonrpc gateway. I would also consider REST, but that's
+not an RPC API.
+
+Data sources:
+ - MSISDN https://en.wikipedia.org/wiki/MSISDN
+ - NANP https://simple.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes
+ - country dialling codes and ISO 3166-1-alpha-2 https://countrycode.org/
+ - MNO identifier lengths https://en.wikipedia.org/wiki/List_of_country_calling_codes

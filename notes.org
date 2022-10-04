@@ -1,0 +1,35 @@
+* instructions
+** Create an application with following requirements:
+
+*** latest PHP or Golang
+*** takes MSISDN as an input
+msisdn = country code + network prefix + subscriber number
+
+example +38641123456 :
+cc = 386
+np = 41
+sn = 123456
+
+*** returns MNO identifier, country dialling code, subscriber number and country identifier as defined with ISO 3166-1-alpha-2
+MNO = np
+*** do not care about number portability
+
+** Write all needed tests.
+
+** Expose the package through an RPC API, select one and explain why have you chosen it.
+I chose JSON-RPC over default Golang rpc (net/rpc) library since I don't know
+the type of clients that will connect to the exposed interface. JSON-RPC seems
+suitable since it has implementations in python, Java, PHP, ruby, etc. If I knew
+the majority of calls came from Golang clients, I'd choose net/rpc and serve the
+others via rpc-jsonrpc gateway.
+
+** Use git, vagrant and/or docker, and a configuration management tool (puppet, chef, ansible ...).
+
+** Other:
+
+- a git repository with full commit history is expected to be part of the delivered solution
+- if needed, provide additional installation instructions, but there shouldn't be much more than running a simple command to set everything up
+- use best practices all around. For PHP, good source of that would be http://www.phptherightway.com
+* info
+iso codes source: https://www.iso.org/obp/ui/#search
+NANP areas data from https://simple.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes
